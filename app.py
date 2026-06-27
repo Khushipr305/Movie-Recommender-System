@@ -3,6 +3,9 @@ import pickle
 import requests
 import time
 
+API_KEY = st.secrets["TMDB_API_KEY"]
+
+
 st.set_page_config(
     page_title="Movie Recommender System",
     page_icon="🎬",
@@ -104,11 +107,9 @@ h1 {
 """, unsafe_allow_html=True)
 
 @st.cache_data
-
-
 def fetch_poster(movie_id):
-    response = requests.get(
-        'https://api.themoviedb.org/3/movie/{}?api_key=9ce5a40833b3ace8565886d23890349a&language=en'.format(movie_id))
+   url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={API_KEY}&language=en-US"
+response = requests.get(url)
     timeout = 1
     data = response.json()
 
@@ -187,11 +188,6 @@ if st.button('✨ Recommend Movies'):
     with col5:
         st.header(names[4])
         st.image(posters[4])
-
-start = time.time()
-names, posters = recommend(selected_movie_name)
-print("Time:", time.time() - start)
-
 
 st.markdown("""
 <div class="footer">
